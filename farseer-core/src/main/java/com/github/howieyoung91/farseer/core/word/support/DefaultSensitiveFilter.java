@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2022-2022 Howie Young, All rights reserved.
+ * Copyright ©2022-2022 杨浩宇，保留所有权利。
+ */
+
 package com.github.howieyoung91.farseer.core.word.support;
 
 import com.github.howieyoung91.farseer.core.util.AcAutomation;
@@ -47,7 +52,7 @@ public class DefaultSensitiveFilter implements SensitiveFilter {
             last = intervals.get(i - 1);
             if (curr.start() > last.end()) {
                 int length = last.end() - l.start(); // calc length
-                builder.replace(l.start(), last.end(), "*".repeat(length));
+                builder.replace(l.start(), last.end(), "*".repeat(length)); // todo
                 l = curr;
             }
         }

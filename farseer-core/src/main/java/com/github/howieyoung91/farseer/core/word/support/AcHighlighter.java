@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2022-2022 Howie Young, All rights reserved.
+ * Copyright ©2022-2022 杨浩宇，保留所有权利。
+ */
+
 package com.github.howieyoung91.farseer.core.word.support;
 
 import com.github.howieyoung91.farseer.core.util.AcAutomation;
@@ -8,8 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class AcHighlighter implements Highlighter {
-    private       String       prefix;
-    private       String       suffix;
+    private final String       prefix;
+    private final String       suffix;
     private final AcAutomation ac;
 
     public AcHighlighter(String prefix, String suffix, String... words) {
@@ -75,7 +80,7 @@ public class AcHighlighter implements Highlighter {
     /**
      * 合并重叠区间
      */
-    private static void mergeIntervals(List<Interval> intervals) {
+    private static void mergeIntervals(List<Interval> orderedIntervals) {
         /*
          * +-----+
          * +-----+
@@ -85,8 +90,8 @@ public class AcHighlighter implements Highlighter {
          * +----------+
          * +----------+
          */
-        if (intervals.size() > 1) {
-            Iterator<Interval> it   = intervals.iterator();
+        if (orderedIntervals.size() > 1) {
+            Iterator<Interval> it   = orderedIntervals.iterator();
             Interval           curr = it.next();
             Interval           next;
             do {

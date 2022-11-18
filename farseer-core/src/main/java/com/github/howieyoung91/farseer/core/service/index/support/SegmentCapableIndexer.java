@@ -1,16 +1,23 @@
-package com.github.howieyoung91.farseer.core.service.support;
+/*
+ * Copyright ©2022-2022 Howie Young, All rights reserved.
+ * Copyright ©2022-2022 杨浩宇，保留所有权利。
+ */
 
+package com.github.howieyoung91.farseer.core.service.index.support;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.howieyoung91.farseer.core.entity.Index;
 import com.github.howieyoung91.farseer.core.entity.Token;
-import com.github.howieyoung91.farseer.core.service.Indexer;
+import com.github.howieyoung91.farseer.core.pojo.DocumentDto;
+import com.github.howieyoung91.farseer.core.service.index.Indexer;
+import com.github.howieyoung91.farseer.core.util.StringUtil;
 import com.github.howieyoung91.farseer.core.word.Keyword;
 import com.github.howieyoung91.farseer.core.word.support.TFIDFAnalyzer;
 import com.huaban.analysis.jieba.JiebaSegmenter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class SegmentCapableIndexer implements Indexer {
@@ -18,6 +25,30 @@ public abstract class SegmentCapableIndexer implements Indexer {
     private JiebaSegmenter segmenter;
     @Resource
     private TFIDFAnalyzer  analyzer;
+
+    @Override
+    public List<DocumentDto> searchByWord(String word, Page<Index> page) {
+        ArrayList<String> words = new ArrayList<>(1);
+        words.add(word);
+        return doSearchByWord(words, page);
+    }
+
+    @Override
+    public Collection<DocumentDto> searchBySentence(String sentence, Page<Index> page) {
+        return doSearchBySentence(segmentOnSearchMode(sentence), page);
+    }
+
+    @Override
+    public List<DocumentDto> searchByQueryString(String query, Page<Index> page) {
+        List<String> words = Arrays.stream(StringUtil.splitByBlank(query)).collect(Collectors.toList());
+        return doSearchByQueryString(words, page);
+    }
+
+    protected abstract List<DocumentDto> doSearchByWord(List<String> words, Page<Index> page);
+
+    protected abstract Collection<DocumentDto> doSearchBySentence(List<String> words, Page<Index> page);
+
+    protected abstract List<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page);
 
     protected List<String> segmentOnSearchMode(String text) {
         return segment(text, JiebaSegmenter.SegMode.SEARCH);

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright ©2022-2022 Howie Young, All rights reserved.
+  ~ Copyright ©2022-2022 杨浩宇，保留所有权利。
+  -->
+
 <profiles version="12">
     <profile kind="CodeFormatterProfile" name="jieba.java.code.style" version="12">
         <setting id="org.eclipse.jdt.core.formatter.comment.insert_new_line_before_root_tags" value="insert"/>

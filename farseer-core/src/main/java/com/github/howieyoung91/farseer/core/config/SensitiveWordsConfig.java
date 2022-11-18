@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2022-2022 Howie Young, All rights reserved.
+ * Copyright ©2022-2022 杨浩宇，保留所有权利。
+ */
+
 package com.github.howieyoung91.farseer.core.config;
 
 import com.github.howieyoung91.farseer.core.word.support.DefaultSensitiveFilter;
@@ -37,6 +42,7 @@ public class SensitiveWordsConfig {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+        builder.addWords("java");
         return builder.build();
     }
 }

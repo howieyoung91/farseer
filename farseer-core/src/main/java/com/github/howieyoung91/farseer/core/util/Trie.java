@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2022-2022 Howie Young, All rights reserved.
+ * Copyright ©2022-2022 杨浩宇，保留所有权利。
+ */
+
 package com.github.howieyoung91.farseer.core.util;
 
 import java.util.ArrayList;
@@ -5,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Trie {
@@ -13,7 +19,7 @@ public class Trie {
 
     private static class Node {
         Map<Character, Node> children = new ConcurrentHashMap<>();
-        boolean              isWord   = false;
+        AtomicBoolean        isWord   = new AtomicBoolean(false);
     }
 
     public void addWords(String... words) {
@@ -29,7 +35,7 @@ public class Trie {
             char c = word.charAt(i);
             curr = curr.children.computeIfAbsent(c, ignored -> new Node());
         }
-        curr.isWord = true;
+        curr.isWord.compareAndSet(false, true); // 让 cas 去比较
 
         // 先简单地比较一下 如果比 maxWordLength 小 就没必要写入了 尽可能地避免 cas
         if (length > height.get()) {
@@ -48,7 +54,7 @@ public class Trie {
             }
             curr = next;
         }
-        return curr.isWord;
+        return curr.isWord.get();
     }
 
     public int height() {
@@ -77,7 +83,7 @@ public class Trie {
     }
 
     private void resolve(String prefix, Node curr, StringBuilder builder, Collection<String> words, int count) {
-        if (curr.isWord) {
+        if (curr.isWord.get()) {
             if (words.size() < count) {
                 words.add(prefix + builder.toString());
             }

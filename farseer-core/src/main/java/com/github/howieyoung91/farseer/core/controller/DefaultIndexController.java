@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2022-2022 Howie Young, All rights reserved.
+ * Copyright ©2022-2022 杨浩宇，保留所有权利。
+ */
+
 package com.github.howieyoung91.farseer.core.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -7,7 +12,7 @@ import com.github.howieyoung91.farseer.core.pojo.DocumentDto;
 import com.github.howieyoung91.farseer.core.pojo.DocumentVo;
 import com.github.howieyoung91.farseer.core.pojo.JsonResponse;
 import com.github.howieyoung91.farseer.core.service.DocumentService;
-import com.github.howieyoung91.farseer.core.service.Indexer;
+import com.github.howieyoung91.farseer.core.service.index.Indexer;
 import com.github.howieyoung91.farseer.core.util.Factory;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/farseer")
 public class DefaultIndexController implements IndexController {
-    @Resource
+    @Resource(name = "indexer")
     private Indexer         indexer;
     @Resource
     private DocumentService documentService;

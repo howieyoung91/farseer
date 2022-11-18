@@ -1,3 +1,8 @@
+/*
+ * Copyright ©2022-2022 Howie Young, All rights reserved.
+ * Copyright ©2022-2022 杨浩宇，保留所有权利。
+ */
+
 package com.github.howieyoung91.farseer.core.pojo;
 
 import com.github.howieyoung91.farseer.core.entity.Document;
@@ -17,13 +22,13 @@ public class DocumentDto {
     private Details details = new Details();
 
     public static DocumentDto from(Document other) {
-        DocumentDto dto = new DocumentDto();
-        dto.setId(other.getId());
-        dto.setText(other.getText());
-        dto.setContent(other.getContent());
-        dto.setHighlightPrefix(other.getHighlightPrefix());
-        dto.setHighlightSuffix(other.getHighlightSuffix());
-        return dto;
+        DocumentDto self = new DocumentDto();
+        self.setId(other.getId());
+        self.setText(other.getText());
+        self.setContent(other.getContent());
+        self.setHighlightPrefix(other.getHighlightPrefix());
+        self.setHighlightSuffix(other.getHighlightSuffix());
+        return self;
     }
 
     public void addIndexInfo(String token, IndexInfo indexInfo) {

@@ -1,4 +1,9 @@
-package com.github.howieyoung91.farseer.core.service;
+/*
+ * Copyright ©2022-2022 Howie Young, All rights reserved.
+ * Copyright ©2022-2022 杨浩宇，保留所有权利。
+ */
+
+package com.github.howieyoung91.farseer.core.service.index;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.howieyoung91.farseer.core.entity.Document;
