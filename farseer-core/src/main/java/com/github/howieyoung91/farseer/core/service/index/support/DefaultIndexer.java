@@ -38,8 +38,7 @@ public class DefaultIndexer extends SegmentCapableIndexer {
 
     @Override
     public List<Index> getIndices(String documentId, Page<Index> page) {
-        return indexMapper.selectPage(
-                        Factory.resolvePage(page),
+        return indexMapper.selectPage(Factory.resolvePage(page),
                         Factory.createLambdaQueryWrapper(Index.class)
                                 .eq(Index::getDocumentId, documentId).orderByDesc(Index::getScore))
                 .getRecords();
@@ -66,15 +65,14 @@ public class DefaultIndexer extends SegmentCapableIndexer {
 
 
     @Override
-    public List<DocumentDto> doSearchByWord(List<String> words, Page<Index> page) {
+    public Collection<DocumentDto> doSearchByWord(List<String> words, Page<Index> page) {
         String word = words.get(0);
         // Token -> Indices -> Documents
         Token          token     = tokenService.selectTokenByWord(word);
         List<Index>    indices   = selectIndicesByToken(token, page);
         List<Document> documents = documentService.selectDocumentsByIndices(indices);
 
-        List<DocumentDto> documentDtos = convert2DocumentDto(word, documents, indices);
-        return documentDtos;
+        return convert2DocumentDto(word, documents, indices);
     }
 
 
@@ -89,7 +87,7 @@ public class DefaultIndexer extends SegmentCapableIndexer {
 
 
     @Override
-    public List<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page) {
+    public Collection<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page) {
         Map<String, DocumentDto> hitDocumentDtoMap   = new HashMap<>(); // documentId : documentDto
         Set<String>              filteredDocumentIds = new HashSet<>();
 
@@ -134,15 +132,11 @@ public class DefaultIndexer extends SegmentCapableIndexer {
         for (String segment : segments) {
             Token token = selectToken(segment);
             Index index = Index.of(token.getId(), document.getId());
-            populateIndex(keywords, token, index);
+            index.setScore(calcScore(keywords, token));
+            index.setCount(1);
             indices.add(index);
         }
         return indices;
-    }
-
-    private static void populateIndex(Map<String, Keyword> keywords, Token token, Index index) {
-        index.setScore(calcScore(keywords, token));
-        index.setCount(1);
     }
 
     private Token selectToken(String segment) {
@@ -265,10 +259,10 @@ public class DefaultIndexer extends SegmentCapableIndexer {
         hitDocumentDtoMap.keySet().removeIf(documentId -> !newIds.contains(documentId));
     }
 
-    private static List<DocumentDto> filterDocuments(Map<String, DocumentDto> hits,
-                                                     Set<String> filteredDocumentIds) {
+    private static List<DocumentDto> filterDocuments(Map<String, DocumentDto> hits, Set<String> filteredDocumentIds) {
         return hits.values().stream()
-                .filter(documentDto -> !filteredDocumentIds.contains(documentDto.getId())).collect(Collectors.toList());
+                .filter(documentDto -> !filteredDocumentIds.contains(documentDto.getId()))
+                .collect(Collectors.toList());
     }
 
     /**

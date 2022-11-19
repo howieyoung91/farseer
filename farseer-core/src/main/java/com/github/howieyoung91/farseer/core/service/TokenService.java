@@ -164,6 +164,6 @@ public class TokenService {
 
     private void kvSet(String key, Token token) {
         log.info("redis key add: {} - {}", key, token);
-        redis.kvSet(key, token);
+        redis.kvSet(key, token, 1000 * 60 * 30);
     }
 }

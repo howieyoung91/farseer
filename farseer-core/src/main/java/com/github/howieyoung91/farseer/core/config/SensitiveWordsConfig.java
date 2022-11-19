@@ -42,7 +42,6 @@ public class SensitiveWordsConfig {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
-        builder.addWords("java");
         return builder.build();
     }
 }

@@ -20,6 +20,9 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * 对分词做相关的实现
+ */
 public abstract class SegmentCapableIndexer implements Indexer {
     @Resource
     private JiebaSegmenter segmenter;
@@ -27,7 +30,7 @@ public abstract class SegmentCapableIndexer implements Indexer {
     private TFIDFAnalyzer  analyzer;
 
     @Override
-    public List<DocumentDto> searchByWord(String word, Page<Index> page) {
+    public Collection<DocumentDto> searchByWord(String word, Page<Index> page) {
         ArrayList<String> words = new ArrayList<>(1);
         words.add(word);
         return doSearchByWord(words, page);
@@ -39,16 +42,16 @@ public abstract class SegmentCapableIndexer implements Indexer {
     }
 
     @Override
-    public List<DocumentDto> searchByQueryString(String query, Page<Index> page) {
+    public Collection<DocumentDto> searchByQueryString(String query, Page<Index> page) {
         List<String> words = Arrays.stream(StringUtil.splitByBlank(query)).collect(Collectors.toList());
         return doSearchByQueryString(words, page);
     }
 
-    protected abstract List<DocumentDto> doSearchByWord(List<String> words, Page<Index> page);
+    protected abstract Collection<DocumentDto> doSearchByWord(List<String> words, Page<Index> page);
 
     protected abstract Collection<DocumentDto> doSearchBySentence(List<String> words, Page<Index> page);
 
-    protected abstract List<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page);
+    protected abstract Collection<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page);
 
     protected List<String> segmentOnSearchMode(String text) {
         return segment(text, JiebaSegmenter.SegMode.SEARCH);

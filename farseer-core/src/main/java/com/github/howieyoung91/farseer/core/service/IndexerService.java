@@ -5,10 +5,8 @@
 
 package com.github.howieyoung91.farseer.core.service;
 
-import com.github.howieyoung91.farseer.core.service.index.support.DefaultIndexer;
-import com.github.howieyoung91.farseer.core.service.index.support.HighlightKeywordDecorator;
-import com.github.howieyoung91.farseer.core.service.index.support.SegmentCapableIndexer;
-import com.github.howieyoung91.farseer.core.service.index.support.SensitiveFilterDecorator;
+import com.github.howieyoung91.farseer.core.service.index.support.*;
+import com.github.howieyoung91.farseer.core.util.Redis;
 import com.github.howieyoung91.farseer.core.word.SensitiveFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,10 +24,13 @@ public class IndexerService {
     DefaultIndexer  defaultIndexer;
     @Resource
     SensitiveFilter filter;
-
+    @Resource
+    Redis           redis;
 
     @Bean
     public SegmentCapableIndexer indexer() {
-        return HighlightKeywordDecorator.decorate(SensitiveFilterDecorator.decorate(defaultIndexer, filter));
+        return HighlightKeywordDecorator.decorate(
+                SensitiveFilterDecorator.decorate(
+                        CacheIndexDecorator.decorate(defaultIndexer, redis), filter));
     }
 }

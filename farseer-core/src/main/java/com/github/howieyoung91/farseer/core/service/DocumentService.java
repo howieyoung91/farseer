@@ -87,7 +87,7 @@ public class DocumentService {
     private Document doSelectDocumentByIdFromDatabase(String documentId) {
         Document document = documentMapper.selectById(documentId);
         if (document == null) {
-            cacheIntoCuckoo(documentId);
+            cacheCuckoo(documentId);
         }
         else {
             cache(document);
@@ -95,13 +95,13 @@ public class DocumentService {
         return document;
     }
 
-    private void cacheIntoCuckoo(String documentId) {
+    private void cacheCuckoo(String documentId) {
         String filterKey = CacheKeys.documentIdCuckooFilter();
         log.info("cuckoo filter [{}] add key [{}]", filterKey, documentId);
         redis.cfadd(filterKey, documentId);
     }
 
     private void cache(Document document) {
-        redis.kvSet(CacheKeys.documentKey(document.getId()), document);
+        redis.kvSet(CacheKeys.documentKey(document.getId()), document, 1000 * 60 * 30);
     }
 }

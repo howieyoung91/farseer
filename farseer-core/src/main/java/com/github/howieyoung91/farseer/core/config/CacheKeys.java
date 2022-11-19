@@ -14,7 +14,6 @@ public abstract class CacheKeys {
 
     public static String tokenIdCuckooFilter() {
         return "farseer:token:filter:cuckoo:id";
-
     }
 
     public static String tokenWordCuckooFilter() {
@@ -29,12 +28,15 @@ public abstract class CacheKeys {
         return "farseer:token:word:" + word;
     }
 
-    public static String indicesOfDocumentKey(String documentId) {
-        return "farseer:document:" + documentId + ":indices";
-    }
-
     public static String documentIdCuckooFilter() {
         return "farseer:document:filter:cuckoo:id";
     }
 
+    public static String indicesOfDocumentKey(String documentId) {
+        return "farseer:document:" + documentId + ":indices";
+    }
+
+    public static String indicesDocumentIdCuckooFilter() {
+        return "farseer:indices:filter:cuckoo:documentId";
+    }
 }

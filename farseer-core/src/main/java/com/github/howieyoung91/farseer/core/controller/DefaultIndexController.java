@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,7 +38,7 @@ public class DefaultIndexController implements IndexController {
         if (size == null) {
             size = 20;
         }
-        List<DocumentDto> documentDtos = indexer.searchByQueryString(query, new Page<>(page, size));
+        Collection<DocumentDto> documentDtos = indexer.searchByQueryString(query, new Page<>(page, size));
         return JsonResponse.SUCCESSFUL(documentDtos);
     }
 
@@ -65,7 +64,7 @@ public class DefaultIndexController implements IndexController {
         if (size == null) {
             size = 20;
         }
-        List<DocumentDto> documentDtos = indexer.searchByWord(word, new Page<>(page, size));
+        Collection<DocumentDto> documentDtos = indexer.searchByWord(word, new Page<>(page, size));
         return JsonResponse.SUCCESSFUL(documentDtos);
     }
 

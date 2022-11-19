@@ -33,8 +33,8 @@ public class HighlightKeywordDecorator extends SegmentCapableIndexer {
     }
 
     @Override
-    protected List<DocumentDto> doSearchByWord(List<String> words, Page<Index> page) {
-        List<DocumentDto> documentDtos = indexer.doSearchByWord(words, page);
+    protected Collection<DocumentDto> doSearchByWord(List<String> words, Page<Index> page) {
+        Collection<DocumentDto> documentDtos = indexer.doSearchByWord(words, page);
         highlight(documentDtos, words.toArray(new String[]{}));
         return documentDtos;
     }
@@ -47,17 +47,17 @@ public class HighlightKeywordDecorator extends SegmentCapableIndexer {
     }
 
     @Override
-    protected List<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page) {
-        List<DocumentDto> documentDtos = indexer.doSearchByQueryString(words, page);
+    protected Collection<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page) {
+        Collection<DocumentDto> documentDtos = indexer.doSearchByQueryString(words, page);
         highlight(documentDtos, words.toArray(new String[]{}));
         return documentDtos;
     }
 
     private static void highlight(Collection<DocumentDto> documents, String... words) {
         for (DocumentDto documentDto : documents) {
-            AcHighlighter highlighter     = new AcHighlighter(
+            AcHighlighter highlighter = new AcHighlighter(
                     documentDto.getHighlightPrefix(), documentDto.getHighlightSuffix(), words);
-            String        highlightedText = highlighter.highlight(documentDto.getText());
+            String highlightedText = highlighter.highlight(documentDto.getText());
             documentDto.setText(highlightedText);
         }
     }

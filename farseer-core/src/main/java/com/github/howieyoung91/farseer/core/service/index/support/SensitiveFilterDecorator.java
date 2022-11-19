@@ -34,11 +34,11 @@ public class SensitiveFilterDecorator extends SegmentCapableIndexer {
     }
 
     @Override
-    public List<DocumentDto> doSearchByWord(List<String> words, Page<Index> page) {
+    public Collection<DocumentDto> doSearchByWord(List<String> words, Page<Index> page) {
         if (isSensitiveWord(words.get(0))) {
             return new ArrayList<>();
         }
-        List<DocumentDto> documentDtos = indexer.doSearchByWord(words, page);
+        Collection<DocumentDto> documentDtos = indexer.doSearchByWord(words, page);
         filterSensitivesInDocument(documentDtos);
         return documentDtos;
     }
@@ -52,9 +52,9 @@ public class SensitiveFilterDecorator extends SegmentCapableIndexer {
     }
 
     @Override
-    public List<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page) {
+    public Collection<DocumentDto> doSearchByQueryString(List<String> words, Page<Index> page) {
         filterSensitivesInWords(words);
-        List<DocumentDto> documentDtos = indexer.doSearchByQueryString(words, page);
+        Collection<DocumentDto> documentDtos = indexer.doSearchByQueryString(words, page);
         filterSensitivesInDocument(documentDtos);
         return documentDtos;
     }

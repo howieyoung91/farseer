@@ -35,7 +35,7 @@ public interface Indexer {
     /**
      * 根据单个词进行查询 (不分词)
      */
-    List<DocumentDto> searchByWord(String word, Page<Index> page);
+    Collection<DocumentDto> searchByWord(String word, Page<Index> page);
 
     /**
      * 根据一个句子进行查询 (智能分词)
@@ -61,5 +61,5 @@ public interface Indexer {
      * @param query 查询字符串
      * @param page  分页
      */
-    List<DocumentDto> searchByQueryString(String query, Page<Index> page);
+    Collection<DocumentDto> searchByQueryString(String query, Page<Index> page);
 }
